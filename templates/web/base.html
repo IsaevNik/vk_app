@@ -1,0 +1,30 @@
+{# Django template #}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VK-app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="{% static 'web/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="page" class="container">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+
+    <section id="content">
+        {% block content %}{% endblock %}
+    </section>
+
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+*.pyc
+media/*
+db.sqlite3
+.idea/
+env/
+logs/*
+!logs/.gitkeep
+run/*
+!run/.gitkeep
+static/*
+tmp/*
+!tmp/skinids.txt
+celerybeat-schedule
