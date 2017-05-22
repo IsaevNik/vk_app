@@ -11,3 +11,4 @@ static/*
 tmp/*
 !tmp/skinids.txt
 celerybeat-schedule
+vk_app/settings.py

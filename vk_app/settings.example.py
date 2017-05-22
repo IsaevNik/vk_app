@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'j7c4!qcwcsm9)w6xkzi7v$5_-e8haovzf9o*0e876%7y060h8c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['vdonate.pro']
 
 
 # Application definition
@@ -120,7 +120,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/vk/'
+STATIC_ROOT = '/var/www/html/vk/'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+}
 
 CACHES = {
     "default": {
@@ -141,3 +151,5 @@ API_URL = 'https://api.vk.com/method/{api_method}?{params}&access_token={token}&
 API_VERSION = '5.64'
 API_ACCESS_TOKEN = 'a44e550fb78bd301c9522989e5865b78b4a4c9eccd56408d7203aa69d422ecabc9f4ea7d8f241f4808f24'
 GROUP_ID = '1431470'
+
+
