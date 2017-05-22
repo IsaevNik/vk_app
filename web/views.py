@@ -10,6 +10,7 @@ from PIL import ImageDraw
 
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
+from django.conf import settings
 
 from core.vk_integration import vk_integrations
 
@@ -41,7 +42,7 @@ def send_comment(request):
                     )
     draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("KhmerOS.ttf", 24)
+    font = ImageFont.truetype(settings.FONT, 28)
     # draw.text((x, y),"Sample Text",(r,g,b))
     draw.text((60, 80), text, (0, 0, 0), font=font)
     img.save('sample-out.jpg')
