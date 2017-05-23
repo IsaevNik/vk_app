@@ -64,7 +64,7 @@ class VKIntegration:
             print(response)
             return True
 
-    def upload_avatar(self, image):
+    def upload_cover(self, image):
         url = self.get_upload_url()
         hash, photo = self.upload_image(url, image)
         self.set_avatar(hash, photo)

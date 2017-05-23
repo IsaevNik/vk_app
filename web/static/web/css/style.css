@@ -2,3 +2,7 @@ img.center {
     display: block;
     margin: 0 auto;
 }
+
+.error {
+    color: #ac2925;
+}

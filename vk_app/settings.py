@@ -122,6 +122,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/vk/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -141,4 +143,4 @@ API_URL = 'https://api.vk.com/method/{api_method}?{params}&access_token={token}&
 API_VERSION = '5.64'
 API_ACCESS_TOKEN = 'a44e550fb78bd301c9522989e5865b78b4a4c9eccd56408d7203aa69d422ecabc9f4ea7d8f241f4808f24'
 GROUP_ID = '1431470'
-FONT = 'KhmerOS.ttf'
+FONT = 'Roboto-Regular.ttf'

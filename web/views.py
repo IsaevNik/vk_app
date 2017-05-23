@@ -4,29 +4,25 @@ import random
 from _sha256 import sha256
 from copy import copy
 
-from PIL import Image
-from PIL import ImageFont
-from PIL import ImageDraw
-
+import time
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from django.conf import settings
 
+from core.service import user as user_service
+from core.service import image as image_service
+from core.utils.cache import donates
 from core.vk_integration import vk_integrations
 
 
 @require_http_methods(['GET'])
 def index(request):
-    user_data = None
     success = request.session.pop('success', None)
     request_data = copy(request.GET)
     # check_sign(request_data)
     api_data = request_data.get('api_result')
     if api_data:
-        response = json.loads(api_data).get('response')
-        if response:
-            user_data = response[0]
-            request.session['user_data'] = user_data
+        user_data = user_service.get_user_info(api_data)
+        request.session['user_data'] = user_data
     else:
         user_data = request.session.get('user_data')
     return render(request, 'web/index.html',
@@ -36,19 +32,18 @@ def index(request):
 @require_http_methods(['POST'])
 def send_comment(request):
     text = request.POST.get('comment', '')
-    img = Image.new('RGB', (1590, 400), color=(random.randint(0, 255),
-                                               random.randint(0, 255),
-                                               random.randint(0, 255))
-                    )
-    draw = ImageDraw.Draw(img)
+    user_data = request.session.get('user_data')
+    if user_data:
 
-    font = ImageFont.truetype(settings.FONT, 28)
-    # draw.text((x, y),"Sample Text",(r,g,b))
-    draw.text((60, 80), text, (0, 0, 0), font=font)
-    img.save('sample-out.jpg')
-    with open('sample-out.jpg', 'rb') as payload:
-        url = vk_integrations.upload_avatar(payload)
-    request.session['success'] = random.randint(1, 2)
+        num = int(time.time() * 1000)
+        path_to_avatar = image_service.save_avatar(user_data.get('photo_200'))
+        donates.create(num, text, path_to_avatar, user_data)
+
+        path_to_image = image_service.create_image()
+
+        with open(path_to_image, 'rb') as payload:
+            vk_integrations.upload_cover(payload)
+        request.session['success'] = random.randint(1, 2)
     return redirect('index')
 
 

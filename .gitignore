@@ -12,3 +12,7 @@ tmp/*
 !tmp/skinids.txt
 celerybeat-schedule
 vk_app/settings.py
+media/covers/*
+!media/covers/.gitkeep
+media/avatars/*
+!media/avatars/.gitkeep
