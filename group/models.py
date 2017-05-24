@@ -23,16 +23,16 @@ class Group(models.Model):
         return DonatesCacheList(self.group_id)
 
     @property
-    def groups_path(self):
+    def group_path(self):
         return os.path.join(settings.MEDIA_ROOT, self.group_id)
 
     @property
     def avatars_path(self):
-        return os.path.join(self.groups_path, settings.AVATARS_DIR)
+        return os.path.join(self.group_path, settings.AVATARS_DIR)
 
     @property
     def covers_path(self):
-        return os.path.join(self.groups_path, settings.COVERS_DIR)
+        return os.path.join(self.group_path, settings.COVERS_DIR)
 
 
 @receiver(post_save, sender=Group)
