@@ -10,4 +10,5 @@ env/
 /vk_app/settings.py
 /media/*
 !/media/fonts/*
+!/media/images/*
 !/media/.gitkeep

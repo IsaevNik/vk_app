@@ -123,6 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/html/vk/static'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CACHES = {
     "default": {
@@ -147,3 +148,5 @@ FONT = 'Roboto-Regular.ttf'
 
 AVATARS_DIR = 'avatars'
 COVERS_DIR = 'covers'
+DEFAULT_AVATAR = os.path.join(MEDIA_ROOT, 'images', 'default_avatar.png')
+

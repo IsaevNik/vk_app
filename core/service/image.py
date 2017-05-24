@@ -13,10 +13,11 @@ from core.utils.cache import Donate
 
 
 def create_image(group):
-    background = Image.new('RGB', (1590, 400), color=(random.randint(0, 255),
-                                               random.randint(0, 255),
-                                               random.randint(0, 255))
-                 )
+    background = Image.new('RGB', (1590, 400),
+                           color=(random.randint(0, 255),
+                                  random.randint(0, 255),
+                                  random.randint(0, 255))
+                           )
     text_draw = ImageDraw.Draw(background)
     font = ImageFont.truetype(settings.FONT, 28)
     username_font = ImageFont.truetype(settings.FONT, 34)
@@ -44,15 +45,18 @@ def create_image(group):
         text_draw.text((x_start + 140, y_start + i * (45 + 90)), item[2], (255, 255, 255), font=username_font)
         text_draw.text((x_start + 120, y_start + 45 + i * (45 + 90)), item[1], (0, 0, 0), font=font)
 
-    file_name = os.path.join(group.covers_path, str(uuid.uuid4())) + '.jpg'
-    background.save(file_name)
+    file_name = os.path.join(group.covers_path, str(uuid.uuid4())) + '.png'
+    background.save(file_name, 'PNG')
     return file_name
 
 
 def save_avatar(url, group):
+    if not url:
+        file_name = settings.DEFAULT_AVATAR
+        return file_name
     if not os.path.exists(group.avatars_path):
         os.makedirs(group.avatars_path)
-    file_name = os.path.join(group.avatars_path, str(uuid.uuid4())) + '.jpg'
+    file_name = os.path.join(group.avatars_path, str(uuid.uuid4())) + '.png'
     page = requests.get(url)
     with open(file_name, 'wb') as fd:
         fd.write(page.content)
