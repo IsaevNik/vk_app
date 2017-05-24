@@ -10,8 +10,9 @@ from django.views.decorators.http import require_http_methods
 
 from core.service import user as user_service
 from core.service import image as image_service
-from core.utils.cache import donates
+from core.utils.cache import Donate
 from core.vk_integration import vk_integrations
+from group.models import Group
 
 
 @require_http_methods(['GET'])
@@ -20,9 +21,11 @@ def index(request):
     request_data = copy(request.GET)
     # check_sign(request_data)
     api_data = request_data.get('api_result')
-    if api_data:
+    group_id = request_data.get('group_id')
+    if api_data and group_id:
         user_data = user_service.get_user_info(api_data)
         request.session['user_data'] = user_data
+        request.session['group_id'] = group_id
     else:
         user_data = request.session.get('user_data')
     return render(request, 'web/index.html',
@@ -31,19 +34,21 @@ def index(request):
 
 @require_http_methods(['POST'])
 def send_comment(request):
+    group = None
     text = request.POST.get('comment', '')
     user_data = request.session.get('user_data')
-    if user_data:
-
+    group_id = request.session.pop('group_id', None)
+    if group_id:
+        group = Group.objects.filter(group_id=group_id).first()
+    if user_data and group:
         num = int(time.time() * 1000)
-        path_to_avatar = image_service.save_avatar(user_data.get('photo_200'))
-        donates.create(num, text, path_to_avatar, user_data)
-
-        path_to_image = image_service.create_image()
+        path_to_avatar = image_service.save_avatar(user_data.get('photo_200'), group)
+        Donate.create(group, num, text, path_to_avatar, user_data)
+        path_to_image = image_service.create_image(group)
 
         with open(path_to_image, 'rb') as payload:
-            vk_integrations.upload_cover(payload)
-        request.session['success'] = random.randint(1, 2)
+            vk_integrations.upload_cover(payload, group)
+    request.session['success'] = random.randint(1, 2)
     return redirect('index')
 
 

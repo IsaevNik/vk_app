@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'web'
+    'web',
+    'group'
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/html/vk/'
+STATIC_ROOT = '/var/www/html/vk/static'
 
 
 CACHES = {
@@ -144,3 +145,5 @@ API_ACCESS_TOKEN = 'a44e550fb78bd301c9522989e5865b78b4a4c9eccd56408d7203aa69d422
 GROUP_ID = '1431470'
 FONT = 'Roboto-Regular.ttf'
 
+AVATARS_DIR = 'avatars'
+COVERS_DIR = 'covers'

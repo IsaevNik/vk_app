@@ -29,6 +29,7 @@
                 </div>
             {% endif %}
             {% if user %}
+                {% if not success %}
                 <form method="POST" action="{% url 'add_comment' %}">
                     {% csrf_token %}
                     <div class="form-group">
@@ -38,6 +39,7 @@
                         <button type="submit" class="btn btn-success">Send</button>
                     </div>
                 </form>
+                {% endif %}
             {% else %}
                 <h3 class="text-center error">Go to our web site from <a href="https://vk.com">vk.com</a></h3>
             {% endif %}

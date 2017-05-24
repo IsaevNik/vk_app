@@ -9,10 +9,10 @@ from PIL import ImageDraw
 
 from django.conf import settings
 
-from core.utils.cache import donates, donates_list
+from core.utils.cache import Donate
 
 
-def create_image():
+def create_image(group):
     background = Image.new('RGB', (1590, 400), color=(random.randint(0, 255),
                                                random.randint(0, 255),
                                                random.randint(0, 255))
@@ -20,7 +20,7 @@ def create_image():
     text_draw = ImageDraw.Draw(background)
     font = ImageFont.truetype(settings.FONT, 28)
     username_font = ImageFont.truetype(settings.FONT, 34)
-    donates_data = [donates.get_all(id) for id in donates_list]
+    donates_data = [Donate.get_data(id) for id in group.donates_list]
     avatars = []
     for donate in donates_data:
         im = Image.open(donate.get('avatar'))
@@ -44,13 +44,15 @@ def create_image():
         text_draw.text((x_start + 140, y_start + i * (45 + 90)), item[2], (255, 255, 255), font=username_font)
         text_draw.text((x_start + 120, y_start + 45 + i * (45 + 90)), item[1], (0, 0, 0), font=font)
 
-    file_name = os.path.join(settings.MEDIA_ROOT, 'covers', str(uuid.uuid4())) + '.jpg'
+    file_name = os.path.join(group.covers_path, str(uuid.uuid4())) + '.jpg'
     background.save(file_name)
     return file_name
 
 
-def save_avatar(url):
-    file_name = os.path.join(settings.MEDIA_ROOT, 'avatars', str(uuid.uuid4())) + '.jpg'
+def save_avatar(url, group):
+    if not os.path.exists(group.avatars_path):
+        os.makedirs(group.avatars_path)
+    file_name = os.path.join(group.avatars_path, str(uuid.uuid4())) + '.jpg'
     page = requests.get(url)
     with open(file_name, 'wb') as fd:
         fd.write(page.content)

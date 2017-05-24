@@ -11,6 +11,14 @@ class BaseCacheList:
     def key(self):
         raise NotImplementedError
 
+    @property
+    def name(self):
+        raise NotImplementedError
+
+    @property
+    def sep(self):
+        raise NotImplementedError
+
     def add(self, val):
         redis_client.lpush(self.key, val)
 
@@ -23,6 +31,9 @@ class BaseCacheList:
     def rpop(self):
         return redis_client.rpop(self.key).decode('utf-8')
 
+    def delete(self):
+        redis_client.delete(self.key)
+
     def __iter__(self):
         return self.all().__iter__()
 
@@ -30,39 +41,44 @@ class BaseCacheList:
         abstract = True
 
 
-class DonatesListCacheList(BaseCacheList):
-    key = 'donate_ids'
+class DonatesCacheList(BaseCacheList):
+    name = 'donate_ids'
+    sep = ':'
+    key = ''
+
+    def __init__(self, group_id):
+        self.key = self.sep.join([self.name, str(group_id)])
 
 
-class DonatesCache:
+class Donate:
     """
     """
     key = 'donate'
     sep = ':'
 
-    def create(self, num, text, avatar, user_data):
-        if len(donates_list) == donates_list.limit:
-            num = donates_list.rpop()
-            self.delete(num)
+    @classmethod
+    def create(cls, group, num, text, avatar, user_data):
+        if len(group.donates_list) == group.donates_list.limit:
+            num = group.donates_list.rpop()
+            cls.delete(num)
         data = {
             'text': text,
             'avatar': avatar,
             'last_name': user_data.get('last_name'),
             'first_name': user_data.get('first_name')
         }
-        redis_client.hmset(self._full_key(num), data)
-        donates_list.add(num)
+        redis_client.hmset(cls._full_key(num), data)
+        group.donates_list.add(num)
 
-    def _full_key(self, num):
-        return self.sep.join([self.key, str(num)])
+    @classmethod
+    def _full_key(cls, num):
+        return cls.sep.join([cls.key, str(num)])
 
-    def get_all(self, num):
+    @classmethod
+    def get_data(cls, num):
         return {k.decode('utf-8'): v.decode('utf-8')
-                for k, v in redis_client.hgetall(self._full_key(num)).items()}
+                for k, v in redis_client.hgetall(cls._full_key(num)).items()}
 
-    def delete(self, num):
-        redis_client.delete(self._full_key(num))
-
-
-donates_list = DonatesListCacheList()
-donates = DonatesCache()
+    @classmethod
+    def delete(cls, num):
+        redis_client.delete(cls._full_key(num))
