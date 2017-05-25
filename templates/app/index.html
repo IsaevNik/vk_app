@@ -1,0 +1,51 @@
+{% extends "layouts/base.html" %}
+{% load staticfiles %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-4">
+            <div class="page-header text-center">
+                <h1>This is simple VK-app <small>for joke!</small></h1>
+            </div>
+        </div>
+
+        {% if user %}
+            <div class="col-sm-offset-4 col-sm-4">
+                <img src="{{ user.photo_200 }}" class="img-circle img-responsive center" width="150">
+                <h3 class="text-center">{{ user.first_name }} {{ user.last_name }}</h3>
+            </div>
+        {% endif %}
+        <div class="col-sm-offset-4 col-sm-4">
+            {% if success == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <p><b>Oh!</b> It is a good joke!</p>
+                </div>
+            {% elif success == 2 %}
+                <div class="alert alert-danger" role="alert">
+                    <p><b>Hmm..</b> Try again!</p>
+                </div>
+            {% endif %}
+            {% if user %}
+                {% if not success %}
+                <form method="POST" action="{% url 'vk:add_comment' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <textarea maxlength="100" class="form-control" name="comment" rows="3" id="inputComment" placeholder="Your joke"></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-success">Send</button>
+                    </div>
+                </form>
+                {% endif %}
+            {% else %}
+                <h3 class="text-center error">Go to our web site from <a href="https://vk.com">vk.com</a></h3>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
