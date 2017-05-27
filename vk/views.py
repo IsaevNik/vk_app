@@ -1,5 +1,6 @@
 import hmac
 import random
+import uuid
 from _sha256 import sha256
 from copy import copy
 
@@ -9,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 
 from core.service import user as user_service
 from core.service import image as image_service
-from core.utils.cache import Donate
+from core.utils.cache import Donate, uuid_group
 from core.vk_integration import vk_integrations
 from group.models import Group
 
@@ -43,9 +44,13 @@ def app_send_comment(request):
         num = int(time.time() * 1000)
         path_to_avatar = image_service.save_avatar(user_data.get('photo_200'), group)
         Donate.create(group, num, text, path_to_avatar, user_data)
-        path_to_image = image_service.create_image(group)
 
-        with open(path_to_image, 'rb') as payload:
+        # path_to_image = image_service.create_image(group)
+        key = uuid.uuid4()
+        uuid_group.set(key, group_id)
+        path_to_cover = image_service.create_image(group, str(key))
+
+        with open(path_to_cover, 'rb') as payload:
             vk_integrations.upload_cover(payload, group)
     request.session['success'] = random.randint(1, 2)
     return redirect('vk:index')

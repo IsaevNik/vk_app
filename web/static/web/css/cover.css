@@ -1,0 +1,60 @@
+.cover-bg {
+    width: 1590px;
+    height: 400px;
+    background-image: url('../img/cover-bg.png');
+    padding: 10px 0 10px 50px;
+}
+
+.donates-container {
+    height: 120px;
+    padding: 10px 5px;
+}
+
+.img-container img {
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.img-container {
+    display: inline-block;
+    margin-right: 30px;
+    position: relative;
+    float: left;
+    top: 7px;
+
+}
+
+.text-container {
+    display: inline-block;
+    position: relative;
+    width: 600px;
+    border-radius: 10px;
+    top: 9px;
+    height: 100%;
+}
+
+.text-container.first {
+    background-color: rgba(130, 130, 130, 0.8);
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.text-container.second {
+    background-color: rgba(130, 130, 130, 0.5);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.text-container.third {
+    background-color: rgba(130, 130, 130, 0.2);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.username {
+    font-size: 24px;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+
+.comment {
+    padding: 5px 20px;
+    font-size: 18px;
+    text-indent: 50px;
+}

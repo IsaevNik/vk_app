@@ -34,6 +34,10 @@ class Group(models.Model):
     def covers_path(self):
         return os.path.join(self.group_path, settings.COVERS_DIR)
 
+    @property
+    def relative_path_avatar(self):
+        return os.path.join(self.group_id, settings.AVATARS_DIR)
+
 
 @receiver(post_save, sender=Group)
 def create_group(sender, instance, created, **kwargs):

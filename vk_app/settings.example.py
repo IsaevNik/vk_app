@@ -64,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -123,6 +125,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/html/vk/static'
 
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CACHES = {
@@ -150,3 +153,5 @@ AVATARS_DIR = 'avatars'
 COVERS_DIR = 'covers'
 DEFAULT_AVATAR = os.path.join(MEDIA_ROOT, 'images', 'default_avatar.png')
 
+API_CLOUD_CONVERT = 'vCnxlfssWw6UQZyB5S4etqKowOKCQt1K0V-Zxw6hypZgFSE5Pw4hRckiA2k8G_--PmxgULZhpUjQDCEZuZ0QoQ'
+ABSOLUTE_URL = 'https://vdonate.pro'

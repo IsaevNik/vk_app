@@ -82,3 +82,52 @@ class Donate:
     @classmethod
     def delete(cls, num):
         redis_client.delete(cls._full_key(num))
+
+
+class BaseHashCache:
+    """
+    Базовый класс для хранения хэшей в кэше
+    """
+
+    @property
+    def key(self):
+        raise NotImplementedError
+
+    def get(self, field):
+        """
+        Получение настройки из кэша
+        :param field:       имя настройки
+        :return:
+        """
+        value = redis_client.hget(self.key, field)
+        if value:
+            return value.decode('utf-8')
+        return None
+
+    def set(self, field, value):
+        """
+        Установка настройки
+        :param field:       имя настройки
+        :param value:       значение настройки
+        :return:
+        """
+        redis_client.hset(self.key, str(field), value)
+
+    def delete(self, field):
+        """
+        Удаление настройки
+        :param field:       имя настройки
+        :return:
+        """
+        redis_client.hdel(self.key, field)
+
+    class Meta:
+        abstract = True
+
+
+class UUIDGroup(BaseHashCache):
+
+    key = 'uuid_group'
+
+uuid_group = UUIDGroup()
+
