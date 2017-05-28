@@ -52,20 +52,25 @@ from core.utils.cache import Donate
 #     return file_name
 
 def create_image(group, key):
-    api = cloudconvert.Api(settings.API_CLOUD_CONVERT)
-    process = api.createProcess({
-        'inputformat': 'website',
-        'outputformat': 'png'
-    })
-    process.start({
-        'wait': True,
-        'input': 'url',
-        'file': settings.ABSOLUTE_URL + reverse('web:covers', kwargs={'uuid': key}),
-        'filename': 'vdonate.website',
-        'outputformat': 'png'
-    })
+    # api = cloudconvert.Api(settings.API_CLOUD_CONVERT)
+    # process = api.createProcess({
+    #     'inputformat': 'website',
+    #     'outputformat': 'png'
+    # })
+    # process.start({
+    #     'wait': True,
+    #     'input': 'url',
+    #     'file': settings.ABSOLUTE_URL + reverse('web:covers', kwargs={'uuid': key}),
+    #     'filename': 'vdonate.website',
+    #     'outputformat': 'png'
+    # })
+    # path_to_cover = os.path.join(group.covers_path, str(uuid.uuid4())) + '.png'
+    # process.download(path_to_cover)
+
     path_to_cover = os.path.join(group.covers_path, str(uuid.uuid4())) + '.png'
-    process.download(path_to_cover)
+    path_to_script = os.path.join(settings.MEDIA_ROOT, 'js', 'rasterize.js')
+    url = settings.ABSOLUTE_URL + reverse('web:covers', kwargs={'uuid': key})
+    os.system('phantomjs {} {} {} "1590px*400px"'.format(path_to_script, url, path_to_cover))
     return path_to_cover
 
 

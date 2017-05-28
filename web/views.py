@@ -13,7 +13,7 @@ def index(request):
 @require_http_methods(['GET'])
 def get_covers(request, uuid):
     group_id = uuid_group.get(uuid)
-    uuid_group.delete(uuid)
+    # uuid_group.delete(uuid)
     if group_id:
         group = Group.objects.filter(group_id=group_id).first()
         if group:

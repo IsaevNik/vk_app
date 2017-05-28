@@ -8,7 +8,5 @@ env/
 !/run/.gitkeep
 /static/*
 /vk_app/settings.py
-/media/*
-!/media/fonts/*
-!/media/images/*
-!/media/.gitkeep
+/media/[0-9]*
+

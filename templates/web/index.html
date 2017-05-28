@@ -1,16 +1,169 @@
-{% extends "layouts/base.html" %}
 {% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VDonate - Сбор пожертвований на благие дела!</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0" />
+    <link href="{% static 'web/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'web/css/style.css' %}?=v2" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="" />
 
-{% block header %}
-{% endblock %}
+    <link href="{% static 'web/css/main.css' %}" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css' />
 
-{% block content %}
-    <div class="row">
-        <div class="col-sm-offset-2 col-sm-8 text-center">
-            <h1>Сбор пожертвований на благие дела!</h1>
-            <a class="btn btn-info" href="#">Подключить</a>
+    <script type="text/javascript" src="{% static 'web/js/jquery-1.7.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/custom.js' %}"></script>
+</head>
+<body>
+	<!-- Header
+		============================= -->
+	<div id="header">
+        <div class="inner">
+
+            <!-- Logo -->
+            <h1 class="logo left"><a href="#">Vdonate</a></h1><!-- .logo-->
+
+            <!-- Nav Menu -->
+            <ul class="nav-menu right">
+                <li class="current"><a href="#">наверх</a></li>
+                <li><a href="#services">услуги</a></li>
+                <li><a href="#about">о нас</a></li>
+                <li><a href="#contact">контакты</a></li>
+            </ul><!-- .nav-menu-->
+
+        </div><!-- .inner -->
+	</div><!-- #header -->
+	<!-- End Header -->
+
+
+<!--
+	<div id="slider" class="theme-default">
+        <div class="inner">
+
+        	<div class="nivo-slider nivoSlider">
+                <a href=""><img src="images/slides/singolo-slide1.jpg" alt="#" /></a>
+                <img src="images/slides/singolo-slide2.jpg" alt="#" />
+            </div>
+
         </div>
-    </div>
-{% endblock %}
-{% block footer %}
-{% endblock %}
+	</div>
+	 -->
+
+
+	<!-- Services
+		============================= -->
+	<div id="services">
+        <div class="inner">
+
+        	<h2>Что предоставляет наш сервис</h2>
+            <h3>Мы предоставляем возможность сообществам социальной сети <a href="https://vk.com">Вконтакте</a> собирать пожертования.</h3>
+
+            <ul>
+            	<li>
+                	<span class="li_pen"></span>
+                    <h4>Индивидуальный подход</h4>
+                    <p>Подготовим уникальную обложку для вашего сообщества.</p>
+                </li>
+
+
+                <li>
+                	<span class="li_bulb"></span>
+                    <h4>Удобство использования</h4>
+                    <p>Прозрачная система остлеживания донатов.</p>
+                </li>
+
+
+                <li>
+                	<span class="li_phone"></span>
+                    <h4>Адаптивный дизайн</h4>
+                    <p>Наше приложение красиво выглядит и на мобильных и на Desktop приложениях</p>
+                </li>
+
+
+            </ul>
+
+        </div><!-- .inner -->
+	</div><!-- #services -->
+	<!-- End Services -->
+
+	<!-- About
+		============================= -->
+	<div id="about">
+        <div class="inner">
+
+        	<!-- Title -->
+        	<h2>О Vdonate</h2>
+
+            <!-- Short Description -->
+            <h3>Вы размещаете наше приложение у себя в сообществе. Ваши подписчики запускают приложение и оказываются на странице с формой, в которой они вводят сумму доната и комментарий (возможность комментирования настраивается). Дальше мы перенаправляем пользователя на страницу платёжки, в которой они совершают платёж. При успешном платеже наша система меняет обложку вашего сообщества, добавляя информацию о новом донате.</h3>
+
+        </div><!-- .inner -->
+	</div><!-- #about -->
+	<!-- End About -->
+
+
+	<!-- Contact
+		============================= -->
+	<div id="contact">
+        <div class="inner">
+
+        	<!-- Title -->
+        	<h2>Оставьте заявку</h2>
+
+            <!-- Short Description -->
+            <h3>Оставьте свою заявку и мы обязательно с вами свяжимся.</h3>
+
+            <ul>
+            	<li>
+                	<form action="" method="post">
+
+                        <input name="Name" class="" type="text" placeholder="Имя" />
+
+                        <input name="Email" class="" type="text" placeholder="Email" />
+
+                        <textarea name="Detail" cols="" rows="" placeholder="Ваше сообщение"></textarea>
+
+                        <input type="submit" value="Отправить" name="subscribe" class="submitbtn" />
+
+                    </form>
+                </li>
+
+                <li>
+                	<h4>Контатктная информация</h4>
+
+                    <span><i class="icon-mail"></i>support@vdonate.pro</span>
+                </li>
+            </ul>
+
+
+        </div><!-- .inner -->
+	</div><!-- #contact -->
+	<!-- End Contact -->
+
+
+	<!-- Footer
+		============================= -->
+	<div id="footer">
+        <div class="inner">
+
+        	<p class="left">© Copyright 2017 by <a href="">3PSI</a></p>
+
+<!--             <ul>
+            	<li>
+                    <a href=""><span class="icon-facebook"></span></a>
+                    <a href=""><span class="icon-gplus"></span></a>
+                    <a href=""><span class="icon-twitter"></span></a>
+                    <a href=""><span class="icon-linkedin"></span></a>
+                </li>
+            </ul> -->
+
+        </div><!-- .inner -->
+	</div><!-- #footer -->
+	<!-- End Footer -->
+
+    <a href="" class="go-top">Наверх!</a>
+
+</body>
+</html>
