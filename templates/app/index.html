@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-offset-4 col-sm-4">
             <div class="page-header text-center">
-                <h1>This is simple VK-app <small>for joke!</small></h1>
+                <h1>Vdonate</h1>
             </div>
         </div>
 
@@ -30,13 +30,16 @@
             {% endif %}
             {% if user %}
                 {% if not success %}
-                <form method="POST" action="{% url 'vk:add_comment' %}">
+                <form method="POST" action="{% url 'vk:make_donate' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <textarea maxlength="100" class="form-control" name="comment" rows="3" id="inputComment" placeholder="Your joke"></textarea>
+                        <input class="form-control" name="amount" id="inputAmount" placeholder="Сумма">
+                    </div>
+                    <div class="form-group">
+                        <textarea maxlength="100" class="form-control" name="comment" rows="3" id="inputComment" placeholder="Ваш комментарий"></textarea>
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-success">Send</button>
+                        <button type="submit" class="btn btn-success">Отправить</button>
                     </div>
                 </form>
                 {% endif %}

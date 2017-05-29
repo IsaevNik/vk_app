@@ -11,7 +11,7 @@ from PIL import ImageDraw
 from django.conf import settings
 from django.urls import reverse
 
-from core.utils.cache import Donate
+from core.utils.cache import DonateCache
 
 
 # def create_image(group):
@@ -83,7 +83,7 @@ def save_avatar(url, group):
     if not os.path.exists(group.avatars_path):
         os.makedirs(group.avatars_path)
 
-    file_name = str(uuid.uuid4()) + '.png'
+    file_name = str(uuid.uuid4()) + '.jpg'
     relative_path_name = os.path.join(group.relative_path_avatar, file_name)
     abs_path_name = os.path.join(group.avatars_path, file_name)
     page = requests.get(url)

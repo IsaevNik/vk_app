@@ -50,20 +50,21 @@ class DonatesCacheList(BaseCacheList):
         self.key = self.sep.join([self.name, str(group_id)])
 
 
-class Donate:
+class DonateCache:
     """
     """
     key = 'donate'
     sep = ':'
 
     @classmethod
-    def create(cls, group, num, text, avatar, user_data):
+    def create(cls, group, num, text, avatar, amount, user_data):
         if len(group.donates_list) == group.donates_list.limit:
             num = group.donates_list.rpop()
             cls.delete(num)
         data = {
             'text': text,
             'avatar': avatar,
+            'amount': amount,
             'last_name': user_data.get('last_name'),
             'first_name': user_data.get('first_name')
         }

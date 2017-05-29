@@ -20,7 +20,7 @@
                 <img src="{{ MEDIA_URL }}{{ donate.avatar }}" class="img-circle" width="105px">
             </div>
             <div class="text-container {% cycle 'first' 'second' 'third' %}">
-                <p class="username"><b>{{ donate.first_name }} {{ donate.last_name }}</b></p>
+                <p class="username"><b>{{ donate.first_name }} {{ donate.last_name }}</b> <span style="color: #761c19">+{{ donate.amount }}</span></p>
                 <p class="comment">{{ donate.text }}</p>
             </div>
         </div>

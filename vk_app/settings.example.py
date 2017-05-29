@@ -155,3 +155,58 @@ DEFAULT_AVATAR = os.path.join(MEDIA_ROOT, 'images', 'default_avatar.png')
 
 API_CLOUD_CONVERT = 'vCnxlfssWw6UQZyB5S4etqKowOKCQt1K0V-Zxw6hypZgFSE5Pw4hRckiA2k8G_--PmxgULZhpUjQDCEZuZ0QoQ'
 ABSOLUTE_URL = 'https://vdonate.pro'
+
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_IMPORTS = (
+    'core.utils.tasks',
+)
+CELERY_IGNORE_RESULT = True
+
+LOG_PATH = os.path.join(BASE_DIR, 'logs')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'main_formatter': {
+            'format': '%(asctime)s [%(name)s.%(levelname)s] '
+                      '%(message)s '
+                      '(%(filename)s:%(lineno)d)',
+            'datefmt': "%Y.%m.%d %H:%M:%S",
+        },
+    },
+    'handlers': {
+        'main_handler': {
+            'level': 'INFO',
+            'filename': os.path.join(LOG_PATH, 'app.log'),
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'formatter': 'main_formatter',
+            'when': 'midnight',
+            'backupCount': 30
+        }
+    },
+    'loggers': {
+        'app': {
+            'level': 'INFO',
+            'handlers': ['main_handler', ],
+        },
+        'vk': {
+            'level': 'INFO',
+            'handlers': ['main_handler', ],
+        },
+        'payment': {
+            'level': 'INFO',
+            'handlers': ['main_handler', ],
+        }
+    }
+}
+
+
+MERCHAND_ID = '51227'
+SECRET1 = 'gowxko6r'
+SECRET2 = 'lbsrwwmi'
+PAYMENT_URL = 'http://www.free-kassa.ru/merchant/cash.php'

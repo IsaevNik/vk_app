@@ -1,0 +1,39 @@
+{% extends "layouts/base.html" %}
+{% load staticfiles %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-4">
+            <div class="page-header text-center">
+                <h1>Vdonate</h1>
+            </div>
+        </div>
+
+        {% if user %}
+            <div class="col-sm-offset-4 col-sm-4">
+                <img src="{{ user.photo_200 }}" class="img-circle img-responsive center" width="150">
+                <h3 class="text-center">{{ user.first_name }} {{ user.last_name }}</h3>
+            </div>
+        {% endif %}
+        <div class="col-sm-offset-4 col-sm-4">
+            {% if status == 'success' %}
+                <div class="alert alert-success" role="alert">
+                    <p><b>Отлично!</b> Спасибо вам большое за поддержку!</p>
+                </div>
+            {% elif status == 'fail' %}
+                <div class="alert alert-danger" role="alert">
+                    <p><b>Увы!</b> {{ error }}.</p>
+                </div>
+                <a class="btn btn-info retry-payment" href="{% url 'vk:index'%}">Попробовать ещё раз</a>
+            {% endif %}
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

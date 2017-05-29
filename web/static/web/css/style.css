@@ -6,3 +6,7 @@ img.center {
 .error {
     color: #ac2925;
 }
+
+.retry-payment {
+    width: 100%;
+}

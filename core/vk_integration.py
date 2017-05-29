@@ -15,12 +15,14 @@ class VKIntegration:
 
     METHODS = {
         'get_upload_url': 'photos.getOwnerCoverPhotoUploadServer',
-        'save_avatar': 'photos.saveOwnerCoverPhoto'
+        'save_avatar': 'photos.saveOwnerCoverPhoto',
+        'user_info': 'users.get'
     }
 
     def __init__(self):
         self.version = settings.API_VERSION
         self.url = settings.API_URL
+        self.not_auth_url = 'https://api.vk.com/method/{api_method}?{params}&v={version}'
         # https://api.vk.com/method/{api_method}?{params}&access_token={token}&v={version}
 
     def request(self, http_method, url, **kwargs):
@@ -84,5 +86,15 @@ class VKIntegration:
             logging.exception('Error in uploading cover to group '
                               '(group_id: [{}])'.format(group.group_id), exc_info=ex)
 
+    def get_profile(self, vk_id):
+        params = {
+            'user_ids': vk_id,
+            'fields': 'photo_200'
+        }
+        params = '&'.join('{}={}'.format(k, v) for k, v in params.items())
+        url = self.not_auth_url.format(api_method=self.METHODS['user_info'], params=params,
+                                       version=self.version)
+        response = self.request(requests.get, url)
+        return response.get('response')
 
 vk_integrations = VKIntegration()

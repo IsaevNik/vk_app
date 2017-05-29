@@ -7,7 +7,7 @@ from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.utils.functional import cached_property
 
-from core.utils.cache import DonatesCacheList, Donate
+from core.utils.cache import DonatesCacheList, DonateCache
 from django.conf import settings
 
 
@@ -15,6 +15,7 @@ class Group(models.Model):
     name = models.CharField(max_length=64)
     access_token = models.CharField(max_length=200)
     group_id = models.CharField(max_length=20, db_index=True, unique=True)
+    min_donate = models.IntegerField(default=0)
 
     def __str__(self):
         return '{} {}'.format(str(self.id), self.name)
@@ -59,7 +60,7 @@ def delete_group(sender, instance, **kwargs):
         shutil.rmtree(instance.group_path)
 
     for donate_id in instance.donates_list:
-        Donate.delete(donate_id)
+        DonateCache.delete(donate_id)
 
     instance.donates_list.delete()
 
@@ -67,7 +68,7 @@ def delete_group(sender, instance, **kwargs):
 class Target(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True)
-    amount = models.IntegerField(null=True)
+    amount = models.IntegerField(null=True, blank=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='targets')
     active = models.BooleanField(default=False)
     donates_sum = models.IntegerField(default=0)
