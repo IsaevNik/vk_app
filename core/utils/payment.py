@@ -18,7 +18,7 @@ class PaymentFacade:
     def check_sign(self, params):
         order_id = params.get('MERCHANT_ORDER_ID')
         amount = params.get('AMOUNT')
-        sign = params.get('sign')
+        sign = params.get('SIGN')
         seq = list(map(str, [self.merchand, amount, self.secret2, order_id]))
         system_sign = self._get_sign(seq)
         return (False, True)[system_sign == sign]
