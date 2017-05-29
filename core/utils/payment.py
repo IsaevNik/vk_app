@@ -3,7 +3,7 @@ import hashlib
 
 class PaymentFacade:
 
-    terminal_url = 'http://www.free-kassa.ru/merchant/cash.php'
+    terminal_url = 'https://www.free-kassa.ru/merchant/cash.php'
     merchand = '51227'
     secret1 = 'gowxko6r'
     secret2 = 'lbsrwwmi'
