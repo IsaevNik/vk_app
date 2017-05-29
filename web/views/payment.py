@@ -20,6 +20,7 @@ def process(request):
             donate_service.send_donate(order)
         except Order.DoesNotExist:
             logger.error('Order does not exist')
+    logger.error('Sign checking fail')
 
 
 @require_http_methods(['GET'])
