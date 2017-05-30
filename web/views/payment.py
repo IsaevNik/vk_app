@@ -1,6 +1,6 @@
 import logging
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
 from core.utils.payment import payment_facade
@@ -27,12 +27,20 @@ def process(request):
 @require_http_methods(['GET'])
 def success(request):
     user_data = request.session.get('user_data')
-    data = dict(user=user_data, status='success')
+    group_id = request.session.get('group_id')
+    if not user_data or group_id:
+        return redirect('web:index')
+    data = dict(user=user_data, status='success', group_id=group_id)
     return render(request, 'app/before.html', data)
 
 
 @require_http_methods(['GET'])
 def fail(request):
     user_data = request.session.get('user_data')
-    data = dict(user=user_data, status='fail', error='Произошла ошибка при оплате')
+    group_id = request.session.get('group_id')
+    if not user_data or group_id:
+        return redirect('web:index')
+    data = dict(user=user_data, status='fail', group_id=group_id,
+                error='Произошла ошибка при оплате')
+
     return render(request, 'app/before.html', data)

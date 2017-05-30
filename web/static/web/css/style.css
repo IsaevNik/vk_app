@@ -7,6 +7,10 @@ img.center {
     color: #ac2925;
 }
 
-.retry-payment {
+.before-btn {
     width: 100%;
+}
+
+.retry-payment {
+    margin-bottom: 10px;
 }

@@ -23,11 +23,13 @@
                 <div class="alert alert-success" role="alert">
                     <p><b>Отлично!</b> Спасибо вам большое за поддержку!</p>
                 </div>
+                <a class="btn btn-info before-btn" href="https://vk.com/club{{ group_id }}">На страницу сообщества</a>
             {% elif status == 'fail' %}
                 <div class="alert alert-danger" role="alert">
                     <p><b>Увы!</b> {{ error }}.</p>
                 </div>
-                <a class="btn btn-info retry-payment" href="{% url 'vk:index'%}">Попробовать ещё раз</a>
+                <a class="btn btn-success before-btn retry-payment" href="{% url 'vk:index'%}">Попробовать ещё раз</a>
+                <a class="btn btn-info before-btn" href="https://vk.com/club{{ group_id }}">На страницу сообщества</a>
             {% endif %}
 
 
