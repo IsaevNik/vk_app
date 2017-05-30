@@ -16,6 +16,7 @@ class Group(models.Model):
     access_token = models.CharField(max_length=200)
     group_id = models.CharField(max_length=20, db_index=True, unique=True)
     min_donate = models.IntegerField(default=0)
+    commission = models.IntegerField(default=15)
 
     def __str__(self):
         return '{} {}'.format(str(self.id), self.name)
@@ -39,6 +40,10 @@ class Group(models.Model):
     @property
     def relative_path_avatar(self):
         return os.path.join(self.group_id, settings.AVATARS_DIR)
+
+    @property
+    def active_target(self):
+        return self.targets.filter(active=True).first()
 
 
 @receiver(post_save, sender=Group)
@@ -92,3 +97,6 @@ class Target(models.Model):
                     first_target.save()
         super().save(*args, **kwargs)
 
+    def update_sum(self, amount):
+        self.donates_sum += amount
+        self.save()

@@ -3,4 +3,4 @@ from django import forms
 
 class DonateForm(forms.Form):
     amount = forms.IntegerField()
-    comment = forms.CharField(required=False)
+    comment = forms.CharField(required=False, max_length=100)

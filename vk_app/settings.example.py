@@ -141,7 +141,7 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 SESSION_COOKIE_AGE = 60 * 10
-
+SESSION_SAVE_EVERY_REQUEST = True
 
 API_URL = 'https://api.vk.com/method/{api_method}?{params}&access_token={token}&v={version}'
 API_VERSION = '5.64'

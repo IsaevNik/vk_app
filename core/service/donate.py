@@ -28,7 +28,9 @@ def accept_donate(data):
     order_id = data.get('MERCHANT_ORDER_ID')
     cur_id = data.get('CUR_ID')
     intid = data.get('intid')
-    order = Order.objects.select_related('donate', 'donate__target__group').get(id=order_id)
+    order = Order.objects.select_related(
+        'donate', 'donate__target', 'donate__target__group'
+    ).get(id=order_id)
     order.cur_id = int(cur_id)
     order.transaction_id = int(intid)
     order.status = Order.DEPOSITED
@@ -42,6 +44,8 @@ def send_donate(order):
     if profile:
         user_data = profile[0]
         group = order.donate.target.group
+        order.donate.target.update_sum(order.amount)
+
         path_to_avatar = image_service.save_avatar(user_data.get('photo_200'), group)
         DonateCache.create(group, num, order.donate.comment, path_to_avatar, order.amount, user_data)
         set_cover.delay(group.group_id)

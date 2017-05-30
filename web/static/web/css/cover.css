@@ -58,3 +58,12 @@
     font-size: 20px;
     text-indent: 50px;
 }
+
+.target {
+    float: right;
+    display: inline-block;
+    position: relative;
+    bottom: 40px;
+    right: 20px;
+    color: whitesmoke;
+}

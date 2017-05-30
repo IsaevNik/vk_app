@@ -4,6 +4,8 @@ from _sha256 import sha256
 from copy import copy
 
 import time
+
+import requests
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
@@ -47,10 +49,15 @@ def donate(request):
             group = Group.objects.filter(group_id=group_id).first()
             if group:
                 amount = form.cleaned_data.get('amount')
-                comment = form.cleaned_data.get('comment', '')
-                order = donate_service.create_donate(vk_id, group, amount, comment)
-                terminal_url = payment_facade.get_terminal(amount, order.id)
-                return redirect(terminal_url)
+                if amount < group.min_donate:
+                    render_data['error'] = 'Администрация сообщества ' \
+                                           'установила величину минимального ' \
+                                           'доната в {} рублей'.format(group.min_donate)
+                else:
+                    comment = form.cleaned_data.get('comment', '')
+                    order = donate_service.create_donate(vk_id, group, amount, comment)
+                    terminal_url = payment_facade.get_terminal(amount, order.id)
+                    return redirect(terminal_url)
             else:
                 render_data['error'] = 'Такая группа не зарегестрирована у нас в системе'
         else:

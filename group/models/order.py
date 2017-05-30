@@ -16,9 +16,11 @@ class Order(models.Model):
     REGISTERED = 0
     DEPOSITED = 1
     DECLINED = 2
+    SEND = 3
     STATUSES = ((REGISTERED, 'Зарегестрирован'),
                 (DEPOSITED, 'Одобрен'),
-                (DECLINED, 'Отклонён'))
+                (DECLINED, 'Отклонён'),
+                (SEND, 'Отправлен'))
     amount = models.IntegerField(default=0)
     status = models.IntegerField(choices=STATUSES, default=REGISTERED)
     create_dt = models.DateTimeField(auto_now_add=True)
