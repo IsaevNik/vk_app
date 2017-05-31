@@ -117,13 +117,13 @@
 
             <ul>
             	<li>
-                	<form action="" method="post">
+                	<form action="{% url 'web:send-email'%}" method="post">
+                        {% csrf_token %}
+                        <input name="name" class="" type="text" placeholder="Имя"/>
 
-                        <input name="Name" class="" type="text" placeholder="Имя" />
+                        <input name="email" class="" type="email" placeholder="Email" required/>
 
-                        <input name="Email" class="" type="text" placeholder="Email" />
-
-                        <textarea name="Detail" cols="" rows="" placeholder="Ваше сообщение"></textarea>
+                        <textarea name="comment" cols="" rows="" placeholder="Ваше сообщение" required></textarea>
 
                         <input type="submit" value="Отправить" name="subscribe" class="submitbtn" />
 

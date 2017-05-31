@@ -10,6 +10,8 @@ from django.utils.functional import cached_property
 from core.utils.cache import DonatesCacheList, DonateCache
 from django.conf import settings
 
+from core.utils.payment import cash_sender
+
 
 class Group(models.Model):
     name = models.CharField(max_length=64)
@@ -56,6 +58,7 @@ def create_group(sender, instance, created, **kwargs):
             os.makedirs(instance.covers_path)
 
         Target.objects.create(name=instance.name, group=instance, active=True)
+        Wallet.objects.create(group=instance)
 
 
 @receiver(pre_delete, sender=Group)
@@ -100,3 +103,54 @@ class Target(models.Model):
     def update_sum(self, amount):
         self.donates_sum += amount
         self.save()
+
+
+class Wallet(models.Model):
+    YD, VISA, QIWI = 45, 94, 63
+    CUR = (
+        (YD, 'Яндекс Деньги'),
+        (VISA, 'VISA'),
+        (QIWI, 'QIWI')
+    )
+    currency = models.IntegerField(choices=CUR, null=True)
+    purse = models.CharField(max_length=64, blank=True)
+    group = models.OneToOneField(Group, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.group.name
+
+
+class CashSend(models.Model):
+    CREATED, IN_PROCESS, COMPLETED, CANCELED, FAILED = 0, 1, 2, 3, 4
+    STATUSES = (
+        (CREATED, 'Создан'),
+        (IN_PROCESS, 'В процессе'),
+        (COMPLETED, 'Выполнен'),
+        (CANCELED, 'Отменён'),
+        (FAILED, 'Ошибка')
+    )
+    STATUSES_MAP = {
+        'New': CREATED,
+        'In process': IN_PROCESS,
+        'Completed': COMPLETED,
+        'Canceled': CANCELED
+    }
+    payment_id = models.CharField(max_length=16, db_index=True)
+    status = models.IntegerField(choices=STATUSES, default=CREATED)
+    amount = models.IntegerField()
+    created_dt = models.DateTimeField(auto_now_add=True)
+    updated_dt = models.DateTimeField(auto_now=True)
+    wallet = models.ForeignKey(Wallet, related_name='cash_sends',
+                               on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+    @staticmethod
+    def send(wallet, amount):
+        if not (wallet.purse or wallet.currency):
+            return None
+        payment_id = cash_sender.cash_send(wallet, amount)
+        if payment_id:
+            return CashSend.objects.create(payment_id=payment_id, amount=amount, wallet=wallet)
+        return None

@@ -1,5 +1,6 @@
 from django.db import models
 
+from group.models import CashSend
 from group.models import Target
 
 
@@ -28,6 +29,12 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
     donate = models.OneToOneField(Donate, on_delete=models.CASCADE)
     cur_id = models.IntegerField(null=True)
+    cash_send = models.ForeignKey(CashSend, on_delete=models.SET_NULL,
+                                  null=True, related_name='orders')
 
     def __str__(self):
         return str(self.id)
+
+    @classmethod
+    def set_to_sended(cls, ids, cash_send):
+        Order.objects.filter(id__in=ids).update(status=cls.SEND, cash_send=cash_send)
