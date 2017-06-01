@@ -4,6 +4,7 @@ import json
 import logging
 import requests
 
+from django.conf import settings
 
 logger = logging.getLogger('payment')
 
@@ -14,10 +15,10 @@ class BadResponse(Exception):
 
 class PaymentFacade:
 
-    terminal_url = 'https://www.free-kassa.ru/merchant/cash.php'
-    merchand = '51227'
-    secret1 = 'gowxko6r'
-    secret2 = 'lbsrwwmi'
+    terminal_url = settings.PAYMENT_URL
+    merchand = settings.MERCHAND_ID
+    secret1 = settings.SECRET1
+    secret2 = settings.SECRET2
 
     def get_terminal(self, amount, order_id):
         seq = list(map(str, [self.merchand, amount, self.secret1, order_id]))
@@ -36,7 +37,7 @@ class PaymentFacade:
 
     @staticmethod
     def _get_sign(seq):
-        line = ':'.join(key for key in seq)
+        line = ':'.join(str(key) for key in seq)
         return hashlib.md5(line.encode('utf-8')).hexdigest()
 
 
@@ -45,10 +46,10 @@ payment_facade = PaymentFacade()
 
 class CashSender:
 
-    merchand = '51227'
-    api_key = 'api_key'
+    wallet_id = settings.WALLET_ID
+    api_key = settings.API_KEY
 
-    url = 'https://wallet.free-kassa.ru/api_v1.php'
+    url = settings.WALLET_API_URL
     BALANCE, CASHOUT, STATUS = 'balance', 'cashout', 'status'
     ACTIONS = {
         BALANCE: 'get_balance',
@@ -70,8 +71,8 @@ class CashSender:
 
     def get_balance(self):
         params = {
-            'wallet_id': self.merchand,
-            'sign': self._get_sign([self.merchand, self.api_key]),
+            'wallet_id': self.wallet_id,
+            'sign': self._get_sign([self.wallet_id, self.api_key]),
             'action': self.ACTIONS[self.BALANCE]
         }
         try:
@@ -82,12 +83,12 @@ class CashSender:
 
     def cash_send(self, wallet, amount):
         params = {
-            'wallet_id': self.merchand,
+            'wallet_id': self.wallet_id,
             'purse': wallet.purse,
             'amount': amount,
             'currency': wallet.currency,
             'desc': 'cash send',
-            'sign': self._get_sign([self.merchand, wallet.currency,
+            'sign': self._get_sign([self.wallet_id, wallet.currency,
                                     amount, wallet.purse, self.api_key]),
             'action': self.ACTIONS[self.CASHOUT],
         }
@@ -99,9 +100,9 @@ class CashSender:
 
     def get_status(self, payment_id):
         params = {
-            'wallet_id': self.merchand,
+            'wallet_id': self.wallet_id,
             'payment_id': payment_id,
-            'sign': self._get_sign([self.merchand, payment_id, self.api_key]),
+            'sign': self._get_sign([self.wallet_id, payment_id, self.api_key]),
             'action': self.ACTIONS[self.STATUS],
         }
         try:
@@ -112,7 +113,7 @@ class CashSender:
 
     @staticmethod
     def _get_sign(seq):
-        line = ':'.join(str(key) for key in seq)
+        line = ''.join(str(key) for key in seq)
         return hashlib.md5(line.encode('utf-8')).hexdigest()
 
 

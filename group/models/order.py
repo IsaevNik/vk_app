@@ -37,4 +37,4 @@ class Order(models.Model):
 
     @classmethod
     def set_to_sended(cls, ids, cash_send):
-        Order.objects.filter(id__in=ids).update(status=cls.SEND, cash_send=cash_send)
+        Order.objects.filter(id__in=ids).update(cash_send=cash_send)

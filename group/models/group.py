@@ -148,7 +148,7 @@ class CashSend(models.Model):
 
     @staticmethod
     def send(wallet, amount):
-        if not (wallet.purse or wallet.currency):
+        if not (wallet.purse and wallet.currency):
             return None
         payment_id = cash_sender.cash_send(wallet, amount)
         if payment_id:

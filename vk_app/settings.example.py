@@ -166,6 +166,7 @@ CELERY_IMPORTS = (
     'core.utils.tasks',
 )
 CELERY_IGNORE_RESULT = True
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600*6}
 
 LOG_PATH = os.path.join(BASE_DIR, 'logs')
 LOGGING = {
@@ -205,8 +206,18 @@ LOGGING = {
     }
 }
 
-
 MERCHAND_ID = '51227'
 SECRET1 = 'gowxko6r'
 SECRET2 = 'lbsrwwmi'
 PAYMENT_URL = 'http://www.free-kassa.ru/merchant/cash.php'
+
+WALLET_API_URL = 'https://wallet.free-kassa.ru/api_v1.php'
+WALLET_ID = 'F102205356'
+API_KEY = '939F34218B1222B4ADF0DE04FFB3D8FA'
+
+ADMINS = [('Nikita', 'support@vdonate.pro'),]
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = 'support@vdonate.pro'
+EMAIL_HOST_PASSWORD = 's4eRgsjsl'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

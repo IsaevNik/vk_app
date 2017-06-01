@@ -6,6 +6,7 @@ from core.utils.payment import cash_sender
 from core.vk_integration import vk_integrations
 from group.models import CashSend
 from group.models import Group
+from group.models import Order
 from vk_app.celery import app
 from core.service import image as image_service
 
@@ -56,6 +57,8 @@ def check_cash_send(self, cash_send_id):
 
             if status not in ['Completed', 'Canceled']:
                 raise ProcessNoFinished
+            if status == 'Completed':
+                cash_send.orders.update(status=Order.SEND)
 
         except ProcessNoFinished as exc:
             self.retry(exc=exc, countdown=4 * 60 * 60)

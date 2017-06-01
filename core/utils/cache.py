@@ -94,7 +94,7 @@ class BaseHashCache:
     def key(self):
         raise NotImplementedError
 
-    def get(self, field):
+    def get(self, field, *args, **kwargs):
         """
         Получение настройки из кэша
         :param field:       имя настройки
@@ -132,3 +132,15 @@ class UUIDGroup(BaseHashCache):
 
 uuid_group = UUIDGroup()
 
+
+class SettingsCache(BaseHashCache):
+
+    key = 'settings'
+
+    def get(self, field, *args, to_type=None, **kwargs):
+        value = super().get(field, *args, **kwargs)
+        if value and to_type:
+            return to_type(value)
+        return value
+
+settings_cache = SettingsCache()
