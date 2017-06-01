@@ -30,7 +30,7 @@
             {% endif %}
             {% if user %}
                 {% if not success %}
-                <form method="POST" action="{% url 'make_donate' %}">
+                <form method="POST" action="{% url 'vk:make_donate' %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <input class="form-control" name="amount" id="inputAmount" placeholder="Сумма">
