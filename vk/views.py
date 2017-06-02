@@ -42,9 +42,9 @@ def donate(request):
     render_data = {}
     form = DonateForm(request.POST)
     user_data = request.session.get('user_data')
+    vk_id = request.session.get('vk_id', None)
+    group_id = request.session.get('group_id', None)
     if form.is_valid():
-        vk_id = request.session.get('vk_id', None)
-        group_id = request.session.get('group_id', None)
         if group_id and vk_id:
             group = Group.objects.filter(group_id=group_id).first()
             if group:
@@ -65,6 +65,7 @@ def donate(request):
     else:
         render_data['error'] = 'Проверьте правильность введённых данных'
     render_data['user'] = user_data
+    render_data['group_id'] = group_id
     render_data['status'] = 'fail'
     # text = request.POST.get('comment', '')
     # user_data = request.session.get('user_data')
