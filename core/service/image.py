@@ -69,10 +69,10 @@ def create_image(group, key):
 
     path_to_cover = os.path.join(group.covers_path, str(uuid.uuid4())) + '.png'
     path_to_script = os.path.join(settings.MEDIA_ROOT, 'js', 'rasterize.js')
-    path_to_phantom = os.path.join(settings.MEDIA_ROOT, 'js', 'phantomjs')
+    path_to_phantom = os.path.join(settings.MEDIA_ROOT, 'js')
     url = settings.ABSOLUTE_URL + reverse('web:covers', kwargs={'uuid': key})
-    os.system('export QT_QPA_PLATFORM=offscreen')
-    os.system('{} {} {} {} "1590px*400px"'.format(path_to_phantom, path_to_script, url, path_to_cover))
+    os.system('cd {}; {} {} {} {} "1590px*400px"'.format(path_to_phantom, './phantomjs',
+                                                         path_to_script, url, path_to_cover))
     return path_to_cover
 
 
