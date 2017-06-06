@@ -72,7 +72,7 @@ def create_image(group, key):
     path_to_phantom = os.path.join(settings.MEDIA_ROOT, 'js')
     url = settings.ABSOLUTE_URL + reverse('web:covers', kwargs={'uuid': key})
     os.system('cd {}; {} {} {} {} "1590px*400px"'.format(path_to_phantom, './phantomjs',
-                                                         path_to_script, url, path_to_cover))
+                                                         'rasterize.js', url, path_to_cover))
     return path_to_cover
 
 
