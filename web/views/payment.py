@@ -30,7 +30,7 @@ def process(request):
 def success(request):
     user_data = request.session.get('user_data')
     group_id = request.session.get('group_id')
-    if not user_data or group_id:
+    if not (user_data and group_id):
         return redirect('web:index')
     data = dict(user=user_data, status='success', group_id=group_id)
     return render(request, 'app/before.html', data)
@@ -40,7 +40,7 @@ def success(request):
 def fail(request):
     user_data = request.session.get('user_data')
     group_id = request.session.get('group_id')
-    if not user_data or group_id:
+    if not (user_data and group_id):
         return redirect('web:index')
     data = dict(user=user_data, status='fail', group_id=group_id,
                 error='Произошла ошибка при оплате')
