@@ -1,5 +1,6 @@
 import logging
 
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
@@ -22,6 +23,7 @@ def process(request):
             logger.error('Order does not exist')
     else:
         logger.error('Sign checking fail')
+    return HttpResponse()
 
 
 @require_http_methods(['GET'])
