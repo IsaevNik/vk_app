@@ -45,8 +45,8 @@ def send_donate(order):
         user_data = profile[0]
         group = order.donate.target.group
         order.donate.target.update_sum(order.amount)
-
-        path_to_avatar = image_service.save_avatar(user_data.get('photo_200'), group)
+        path_to_avatar = user_data.get('photo_200')
+        # path_to_avatar = image_service.save_avatar(user_data.get('photo_200'), group)
         DonateCache.create(group, num, order.donate.comment, path_to_avatar, order.amount, user_data)
         set_cover.delay(group.group_id)
 

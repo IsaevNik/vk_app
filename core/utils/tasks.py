@@ -28,7 +28,7 @@ def set_cover(group_id):
         try:
             path_to_cover = image_service.create_image(group, str(key))
         except Exception as ex:
-            logging.exception('Error in cloudconvert', exc_info=ex)
+            logging.exception('Error in phantomjs', exc_info=ex)
             return
         logger.info('Success create and save image for '
                     'group: [{}] to path [{}]'.format(group_id, path_to_cover))
@@ -37,7 +37,7 @@ def set_cover(group_id):
         logging.info('Success set cover for group: [{}]'.format(group_id))
 
 
-@app.task(bind=True, name='check_cash_send', max_retries=6)
+@app.task(bind=True, name='check_cash_send', max_retries=6, default_retry_delay=4*60*60)
 def check_cash_send(self, cash_send_id):
     cash_send = CashSend.objects.filter(id=cash_send_id).first()
     if cash_send:
@@ -61,4 +61,4 @@ def check_cash_send(self, cash_send_id):
                 cash_send.orders.update(status=Order.SEND)
 
         except ProcessNoFinished as exc:
-            self.retry(exc=exc, countdown=4 * 60 * 60)
+            raise self.retry(exc=exc)

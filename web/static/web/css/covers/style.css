@@ -1,0 +1,152 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+img {
+  max-width: 100%;
+}
+html {
+  font-family: 'Roboto', sans-serif;
+}
+.wrapper {
+  width: 1590px;
+  height: 400px;
+  padding: 10px 35px;
+  display: flex;
+  position: relative;
+  background: url("../../img/bg.jpg") no-repeat center;
+}
+.left {
+  margin-right: 50px;
+}
+.chat__item {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.chat__left {
+  padding-right: 30px;
+}
+.chat__avatar {
+  border-radius: 50%;
+  width: 104px;
+  height: 104px;
+  border: 2px solid #0ff;
+  overflow: hidden;
+}
+.chat__avatar img {
+  border-radius: 50%;
+  display: block;
+}
+.message {
+  width: 820px;
+  height: 114px;
+  padding: 0 20px;
+  position: relative;
+}
+.chat__item:first-child .message {
+  background: url("../../img/rect-long.png") no-repeat center;
+}
+.chat__item:nth-child(2) .message {
+  background: url("../../img/rect-long-2.png") no-repeat center;
+  width: 809px;
+  height: 128px;
+}
+.chat__item:last-child .message {
+  background: url("../../img/rect-long-3.png") no-repeat center;
+  width: 845px;
+  height: 115px;
+}
+.message__nick {
+  font-size: 24px;
+  color: #009baf;
+  padding-top: 3px;
+}
+.message__text {
+  font-size: 20px;
+  padding: 10px 80px 0 20px;
+}
+.message__points {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 80px;
+  height: 80px;
+}
+.chat__item:nth-child(2) .message__points {
+  right: -30px;
+}
+.points {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  background: url("../../img/circle.png") no-repeat center;
+  position: relative;
+}
+.points__score {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+.points__char {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  position: relative;
+  z-index: 1;
+}
+.status {
+  width: 465px;
+  height: 247px;
+  font-size: 48px;
+  background: url("../../img/rect-big.png") no-repeat center;
+  padding: 10px 80px 10px 90px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.progress {
+  width: 410px;
+  height: 39px;
+  border-radius: 19px;
+  background-color: #fff;
+  position: relative;
+}
+.progress__bar {
+  text-align: center;
+  border-radius: 19px;
+  background: url("../../img/128-29.jpg") repeat;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.progress__bar:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,0,255,0.6);
+}
+.progress__text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 50px;
+  text-align: center;
+  line-height: 0.8;
+}

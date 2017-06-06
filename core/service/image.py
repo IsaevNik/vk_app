@@ -69,24 +69,25 @@ def create_image(group, key):
 
     path_to_cover = os.path.join(group.covers_path, str(uuid.uuid4())) + '.png'
     path_to_script = os.path.join(settings.MEDIA_ROOT, 'js', 'rasterize.js')
+    path_to_phantom = os.path.join(settings.MEDIA_ROOT, 'js', 'phantomjs')
     url = settings.ABSOLUTE_URL + reverse('web:covers', kwargs={'uuid': key})
     os.system('export QT_QPA_PLATFORM=offscreen')
-    os.system('phantomjs {} {} {} "1590px*400px"'.format(path_to_script, url, path_to_cover))
+    os.system('{} {} {} {} "1590px*400px"'.format(path_to_phantom, path_to_script, url, path_to_cover))
     return path_to_cover
 
 
-def save_avatar(url, group):
-    if not url:
-        relative_path_name = settings.DEFAULT_AVATAR
-        return relative_path_name
-
-    if not os.path.exists(group.avatars_path):
-        os.makedirs(group.avatars_path)
-
-    file_name = str(uuid.uuid4()) + '.jpg'
-    relative_path_name = os.path.join(group.relative_path_avatar, file_name)
-    abs_path_name = os.path.join(group.avatars_path, file_name)
-    page = requests.get(url)
-    with open(abs_path_name, 'wb') as fd:
-        fd.write(page.content)
-    return relative_path_name
+# def save_avatar(url, group):
+#     if not url:
+#         relative_path_name = settings.DEFAULT_AVATAR
+#         return relative_path_name
+#
+#     if not os.path.exists(group.avatars_path):
+#         os.makedirs(group.avatars_path)
+#
+#     file_name = str(uuid.uuid4()) + '.jpg'
+#     relative_path_name = os.path.join(group.relative_path_avatar, file_name)
+#     abs_path_name = os.path.join(group.avatars_path, file_name)
+#     page = requests.get(url)
+#     with open(abs_path_name, 'wb') as fd:
+#         fd.write(page.content)
+#     return relative_path_name

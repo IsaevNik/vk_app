@@ -1,0 +1,38 @@
+{# Django template #}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VK-app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="{% static 'web/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'web/css/style.css' %}?=v2" rel="stylesheet">
+    <link href="{% static 'web/css/cover.css' %}?=v4" rel="stylesheet">
+</head>
+<body>
+    <div class="cover-bg">
+        {% for donate in donates %}
+        <div class="donates-container">
+            <div class="img-container">
+                <img src="{{ MEDIA_URL }}{{ donate.avatar }}" class="img-circle" width="105px">
+            </div>
+            <div class="text-container {% cycle 'first' 'second' 'third' %}">
+                <p class="username"><b>{{ donate.first_name }} {{ donate.last_name }}</b> <span style="color: #761c19">+{{ donate.amount }}</span></p>
+                <p class="comment">{{ donate.text }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% if target.amount %}
+        <div class="target">
+            <h1>{{ target.donates_sum }}/{{ target.amount }}</h1>
+        </div>
+        {% endif %}
+    </div>
+    <script src="{% static 'web/js/jquery-3.2.1.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

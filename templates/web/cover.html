@@ -1,38 +1,129 @@
 {# Django template #}
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>VK-app</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href="{% static 'web/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'web/css/style.css' %}?=v2" rel="stylesheet">
-    <link href="{% static 'web/css/cover.css' %}?=v4" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto&amp;subset=cyrillic" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'web/css/covers/normalize.css' %}">
+	<link rel="stylesheet" href="{% static 'web/css/covers/style.css' %}">
 </head>
 <body>
-    <div class="cover-bg">
-        {% for donate in donates %}
-        <div class="donates-container">
-            <div class="img-container">
-                <img src="{{ MEDIA_URL }}{{ donate.avatar }}" class="img-circle" width="105px">
-            </div>
-            <div class="text-container {% cycle 'first' 'second' 'third' %}">
-                <p class="username"><b>{{ donate.first_name }} {{ donate.last_name }}</b> <span style="color: #761c19">+{{ donate.amount }}</span></p>
-                <p class="comment">{{ donate.text }}</p>
-            </div>
-        </div>
-        {% endfor %}
-        {% if target.amount %}
-        <div class="target">
-            <h1>{{ target.donates_sum }}/{{ target.amount }}</h1>
-        </div>
-        {% endif %}
-    </div>
-    <script src="{% static 'web/js/jquery-3.2.1.min.js' %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+	<div class="wrapper">
+		<div class="left">
+			<div class="chat">
+                {% for donate in donates %}
+				<div class="chat__item">
+					<div class="chat__left">
+						<div class="chat__avatar">
+							<img src="{% if donate.avatar %}{{ donate.avatar }}{% else %}{{ default_url }}{% endif %}" alt="" />
+						</div>
+						<!-- /.__avatar -->
+					</div>
+					<!-- /.chat__left -->
+					<div class="chat__right">
+						<div class="message">
+							<div class="message__nick">{{ donate.first_name }} {{ donate.last_name }}</div>
+							<!-- /.message__nick -->
+							<div class="message__text">{{ donate.text }}</div>
+							<!-- /.message__text -->
+							<div class="message__points">
+								<div class="points">
+									<div class="points__score">{{ donate.amount }}</div>
+									<!-- /.points__score -->
+									<div class="points__char">Р</div>
+									<!-- /.points__char -->
+								</div>
+								<!-- /.points -->
+							</div>
+							<!-- /.message__points -->
+						</div>
+						<!-- /.message -->
+					</div>
+					<!-- /.chat__right -->
+				</div>
+                {% endfor %}
+{#				<div class="chat__item">#}
+{#					<div class="chat__left">#}
+{#						<div class="chat__avatar">#}
+{#							<img src="images/avatar.jpg" alt="" />#}
+{#						</div>#}
+{#						<!-- /.__avatar -->#}
+{#					</div>#}
+{#					<!-- /.chat__left -->#}
+{#					<div class="chat__right">#}
+{#						<div class="message">#}
+{#							<div class="message__nick">Никита Исаев</div>#}
+{#							<!-- /.message__nick -->#}
+{#							<div class="message__text">Это быстрый и настраиваемый веб-браузер для продвинутых пользователей, созданный людьми, которые стояли у истоков Оpera. Называемый “Браузер для наших друзей”, Vivaldi строился с Vivaldi</div>#}
+{#							<!-- /.message__text -->#}
+{#							<div class="message__points">#}
+{#								<div class="points">#}
+{#									<div class="points__score">2 233</div>#}
+{#									<!-- /.points__score -->#}
+{#									<div class="points__char">П</div>#}
+{#									<!-- /.points__char -->#}
+{#								</div>#}
+{#								<!-- /.points -->#}
+{#							</div>#}
+{#							<!-- /.message__points -->#}
+{#						</div>#}
+{#						<!-- /.message -->#}
+{#					</div>#}
+{#					<!-- /.chat__right -->#}
+{#				</div>#}
+{#				<div class="chat__item">#}
+{#					<div class="chat__left">#}
+{#						<div class="chat__avatar">#}
+{#							<img src="images/avatar.jpg" alt="" />#}
+{#						</div>#}
+{#						<!-- /.__avatar -->#}
+{#					</div>#}
+{#					<!-- /.chat__left -->#}
+{#					<div class="chat__right">#}
+{#						<div class="message">#}
+{#							<div class="message__nick">Никита Исаев</div>#}
+{#							<!-- /.message__nick -->#}
+{#							<div class="message__text">Это быстрый и настраиваемый веб-браузер для продвинутых пользователей, созданный людьми, которые стояли у истоков Оpera. Называемый “Браузер для наших друзей”, Vivaldi строился с Vivaldi</div>#}
+{#							<!-- /.message__text -->#}
+{#							<div class="message__points">#}
+{#								<div class="points">#}
+{#									<div class="points__score">2 233</div>#}
+{#									<!-- /.points__score -->#}
+{#									<div class="points__char">П</div>#}
+{#									<!-- /.points__char -->#}
+{#								</div>#}
+{#								<!-- /.points -->#}
+{#							</div>#}
+{#							<!-- /.message__points -->#}
+{#						</div>#}
+{#						<!-- /.message -->#}
+{#					</div>#}
+{#					<!-- /.chat__right -->#}
+{#				</div>#}
+				<!-- /.chat__item -->
+			</div>
+			<!-- /.chat -->
+		</div>
+		<div class="right">
+			<div class="status">
+				<div class="status__text">{{ target.description }}</div>
+				<!-- /.status__text -->
+			</div>
+			<!-- /.status -->
+            {% if target_percents %}
+			<div class="progress">
+				<div class="progress__bar" style="width: {{ target_percents }}%"></div>
+				<!-- /.progress__bar -->
+				<div class="progress__text">{{ target_percents }}%</div>
+				<!-- /.progress__text -->
+			</div>
+            {% endif %}
+			<!-- /.progress -->
+		</div>
+	</div>
 </body>
 </html>

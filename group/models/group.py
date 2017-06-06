@@ -1,6 +1,7 @@
 import os
 import shutil
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.db import transaction
 from django.db.models.signals import post_save, pre_delete
@@ -11,14 +12,21 @@ from core.utils.cache import DonatesCacheList, DonateCache
 from django.conf import settings
 
 from core.utils.payment import cash_sender
+from group.models.managers import CashSendManager
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=64)
-    access_token = models.CharField(max_length=200)
-    group_id = models.CharField(max_length=20, db_index=True, unique=True)
-    min_donate = models.IntegerField(default=0)
-    commission = models.IntegerField(default=15)
+    name = models.CharField(max_length=64, verbose_name='Название')
+    access_token = models.CharField(max_length=200, verbose_name='Токен')
+    group_id = models.CharField(max_length=20, db_index=True, unique=True,
+                                verbose_name='Идентификатор сообщества в VK')
+    min_donate = models.IntegerField(default=0, verbose_name='Величина минимального доната')
+    commission = models.IntegerField(default=15, verbose_name='Комиссия')
+    admin = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, verbose_name='Админ')
+
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
 
     def __str__(self):
         return '{} {}'.format(str(self.id), self.name)
@@ -74,15 +82,20 @@ def delete_group(sender, instance, **kwargs):
 
 
 class Target(models.Model):
-    name = models.CharField(max_length=64)
-    description = models.TextField(blank=True)
-    amount = models.IntegerField(null=True, blank=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='targets')
-    active = models.BooleanField(default=False)
-    donates_sum = models.IntegerField(default=0)
+    name = models.CharField(max_length=64, verbose_name='Название')
+    description = models.TextField(blank=True, verbose_name='Описание')
+    amount = models.IntegerField(null=True, blank=True, verbose_name='Сумма')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE,
+                              related_name='targets', verbose_name='Группа')
+    active = models.BooleanField(default=False, verbose_name='Статус')
+    donates_sum = models.IntegerField(default=0, verbose_name='Накоплено')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Цель'
+        verbose_name_plural = 'Цели'
 
     @transaction.atomic
     def save(self, *args, **kwargs):
@@ -112,15 +125,20 @@ class Wallet(models.Model):
         (VISA, 'VISA'),
         (QIWI, 'QIWI')
     )
-    currency = models.IntegerField(choices=CUR, null=True)
-    purse = models.CharField(max_length=64, blank=True)
-    group = models.OneToOneField(Group, on_delete=models.CASCADE)
+    currency = models.IntegerField(choices=CUR, null=True, verbose_name='Валюта перевода')
+    purse = models.CharField(max_length=64, blank=True, verbose_name='Реквизиты')
+    group = models.OneToOneField(Group, on_delete=models.CASCADE, verbose_name='Группа')
 
     def __str__(self):
         return self.group.name
 
+    class Meta:
+        verbose_name = 'Кошелёк'
+        verbose_name_plural = 'Кошельки'
+
 
 class CashSend(models.Model):
+    objects = CashSendManager()
     CREATED, IN_PROCESS, COMPLETED, CANCELED, FAILED = 0, 1, 2, 3, 4
     STATUSES = (
         (CREATED, 'Создан'),
@@ -135,13 +153,19 @@ class CashSend(models.Model):
         'Completed': COMPLETED,
         'Canceled': CANCELED
     }
-    payment_id = models.CharField(max_length=16, db_index=True)
-    status = models.IntegerField(choices=STATUSES, default=CREATED)
-    amount = models.IntegerField()
-    created_dt = models.DateTimeField(auto_now_add=True)
-    updated_dt = models.DateTimeField(auto_now=True)
+    payment_id = models.CharField(max_length=16, db_index=True,
+                                  verbose_name='Идентификатор перевода')
+    status = models.IntegerField(choices=STATUSES, default=CREATED,
+                                 verbose_name='Статус')
+    amount = models.IntegerField(verbose_name='Сумма')
+    created_dt = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_dt = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
     wallet = models.ForeignKey(Wallet, related_name='cash_sends',
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE, verbose_name='Кошелёк')
+
+    class Meta:
+        verbose_name = 'Вывод'
+        verbose_name_plural = 'Выводы'
 
     def __str__(self):
         return str(self.id)
