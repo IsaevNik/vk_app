@@ -19,11 +19,12 @@ class PaymentFacade:
     merchand = settings.MERCHAND_ID
     secret1 = settings.SECRET1
     secret2 = settings.SECRET2
+    email = 'info@vdonate.pro'
 
     def get_terminal(self, amount, order_id):
         seq = list(map(str, [self.merchand, amount, self.secret1, order_id]))
         sign = self._get_sign(seq)
-        params = dict(m=self.merchand, oa=amount, o=order_id, s=sign)
+        params = dict(m=self.merchand, oa=amount, o=order_id, s=sign, em=self.email)
         return '/?'.join([self.terminal_url,
                          '&'.join(['{}={}'.format(k, v) for k, v in params.items()])])
 
