@@ -19,7 +19,7 @@ class PaymentFacade:
     merchand = settings.MERCHAND_ID
     secret1 = settings.SECRET1
     secret2 = settings.SECRET2
-    email = 'info@vdonate.pro'
+    email = 'payment@vdonate.pro'
 
     def get_terminal(self, amount, order_id):
         seq = list(map(str, [self.merchand, amount, self.secret1, order_id]))
