@@ -1,6 +1,11 @@
+import re
+
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.db.models import Sum
 from django.contrib import messages
+from django import forms
 
 from core.utils.cache import settings_cache
 from group.models import Group, Target, Order, Donate, CashSend, Wallet
@@ -9,6 +14,8 @@ from core.utils.tasks import check_cash_send
 
 
 class GroupAdmin(admin.ModelAdmin):
+    readonly_fields = ['group_id']
+    fields = ['group_id', 'access_token', 'name', 'min_donate']
     actions = ['send_cash']
     list_display = ('__str__', 'donates', 'donates_with_profit', 'commission', 'min_donate')
 
@@ -41,6 +48,23 @@ class GroupAdmin(admin.ModelAdmin):
         else:
             messages.error(request, 'Сумма должна быть больше 1000 рублей')
     send_cash.description = 'Отправить'
+
+    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return Group.objects.all()
+        return Group.objects.filter(admin=request.user)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if not request.user.is_superuser:
+            del actions['send_cash']
+            del actions['delete_selected']
+        return actions
+
+    def get_readonly_fields(self, request, obj=None):
+        if not request.user.is_superuser:
+            return self.readonly_fields
+        return []
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -122,10 +146,56 @@ class CashSendAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'payment_id', 'status', 'amount')
 
 
+class WalletForm(forms.ModelForm):
+    class Meta:
+        model = Wallet
+        fields = '__all__'
+
+    def clean(self):
+        currency = self.cleaned_data.get('currency')
+        purse = self.cleaned_data.get('purse')
+        if currency == Wallet.YD:
+            reg = re.compile(r'^(\d){15}$')
+            if not reg.match(purse):
+                raise ValidationError('Для яндекс денег требуется следующий формат: <410011729822xxx>')
+        elif currency == Wallet.QIWI:
+            reg = re.compile(r'^\+7(\d){10}$')
+            if not reg.match(purse):
+                raise ValidationError('Для QIWI требуется следующий формат: <+7910123xxxx>')
+        else:
+            reg = re.compile(r'^(\d){16}\s(\d){2}/(\d){2}$')
+            if not reg.match(purse):
+                raise ValidationError('Для VISA требуется следующий формат: <123456789123xxxx 01/01>')
+        return self.cleaned_data
+
+
+class WalletAdmin(admin.ModelAdmin):
+
+    form = WalletForm
+
+    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return Wallet.objects.all()
+        return Wallet.objects.filter(group__admin=request.user)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if not request.user.is_superuser:
+            del actions['delete_selected']
+        return actions
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request)
+        if not request.user.is_superuser:
+            fields.remove('group')
+        return fields
+
+
+
 admin.site.register(CashSend, CashSendAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Target)
 admin.site.register(Donate, DonateAdmin)
-admin.site.register(Wallet)
+admin.site.register(Wallet, WalletAdmin)
 

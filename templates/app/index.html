@@ -47,16 +47,7 @@
                 <h3 class="text-center error">Если Вы пришли из сообщества <a href="https://vk.com">vk.com</a> и видите эту надпись - значит вашего сообщества
                 нет в нашей системе, напишите нам <a href="mailto:support@vdonate.pro">support@vdonate.pro</a> и мы Вам поможем.</h3>
             {% endif %}
-            <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
-                <input type="hidden" name="receiver" value="410015333443782">
-                <label>Сумма:<input name="sum" type="number"></label>
-                <input type="hidden" name="quickpay-form" value="donate">
-                <input type="hidden" name="targets" value="xxx">
-                <label><input type="radio" name="paymentType" value="PC">Яндекс.Деньгами</label>
-                <label><input type="radio" name="paymentType" value="AC">Банковской картой</label>
-                <input type="submit" value="Перевести">
-            </form>
-            <div>
+            </div>
 
     </div>
 {% endblock %}

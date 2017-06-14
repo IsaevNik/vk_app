@@ -119,6 +119,9 @@ class Target(models.Model):
 
 
 class Wallet(models.Model):
+    purse_help_text = 'Для Яндекс Деньги: 410011729822xxx <br>' \
+                      'Для VISA: 123456789123xxxx 01/01 <br>' \
+                      'Для QIWI: +7910123xxxx'
     YD, VISA, QIWI = 45, 94, 63
     CUR = (
         (YD, 'Яндекс Деньги'),
@@ -126,7 +129,7 @@ class Wallet(models.Model):
         (QIWI, 'QIWI')
     )
     currency = models.IntegerField(choices=CUR, null=True, verbose_name='Валюта перевода')
-    purse = models.CharField(max_length=64, blank=True, verbose_name='Реквизиты')
+    purse = models.CharField(max_length=64, blank=True, verbose_name='Реквизиты', help_text=purse_help_text)
     group = models.OneToOneField(Group, on_delete=models.CASCADE, verbose_name='Группа')
 
     def __str__(self):
