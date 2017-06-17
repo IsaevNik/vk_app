@@ -88,7 +88,7 @@ class Target(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE,
                               related_name='targets', verbose_name='Группа')
     active = models.BooleanField(default=False, verbose_name='Статус')
-    donates_sum = models.IntegerField(default=0, verbose_name='Накоплено')
+    donates_sum = models.IntegerField(default=0, verbose_name='Накоплено', editable=False)
 
     def __str__(self):
         return self.name
