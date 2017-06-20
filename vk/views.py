@@ -25,8 +25,9 @@ def app_index(request):
     request_data = copy(request.GET)
     api_data = request_data.get('api_result')
     vk_id = request_data.get('viewer_id')
-    group_id = request_data.get('group_id')
-    if api_data and group_id:
+    group_id = request_data.get('group_id', 0)
+    group = Group.objects.filter(group_id=group_id)
+    if api_data and group:
         user_data = user_service.get_user_info(api_data)
         request.session['user_data'] = user_data
         request.session['group_id'] = group_id
