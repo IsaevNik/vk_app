@@ -16,7 +16,7 @@ def index(request):
 @require_http_methods(['GET'])
 def get_covers(request, uuid):
     group_id = uuid_group.get(uuid)
-    uuid_group.delete(uuid)
+    # uuid_group.delete(uuid)
     default_url = settings.MEDIA_URL + '/' + settings.DEFAULT_AVATAR
     if group_id:
         group = Group.objects.filter(group_id=group_id).first()
@@ -26,10 +26,11 @@ def get_covers(request, uuid):
             target_percents = None
             if target.amount:
                 target_percents = min(100, int(100 * target.donates_sum/target.amount))
-            return render(request, 'web/cover.html', {'donates': donates_data,
-                                                      'target': group.active_target,
-                                                      'default_url': default_url,
-                                                      'target_percents': target_percents})
+            return render(request, 'web/banner-3.html', {'donates': donates_data,
+                                                         'target': group.active_target,
+                                                         'group': group,
+                                                         'default_url': default_url,
+                                                         'target_percents': target_percents})
     return redirect('web:index')
 
 
